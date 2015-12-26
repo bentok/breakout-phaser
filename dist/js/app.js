@@ -5,8 +5,7 @@ var GAME = new Phaser.Game(480, 320, Phaser.AUTO, null, {
   preload: preload, create: create, update: update
 });
 
-var ball;
-var paddle;
+var ball, paddle, bricks, newBrick, brickInfo;
 
 // Preload assets
 function preload() {
@@ -16,6 +15,7 @@ function preload() {
   GAME.stage.backgroundColor = '#eee';
   GAME.load.image('ball', '../src/img/ball.png');
   GAME.load.image('paddle', '../src/img/paddle.png');
+  GAME.load.image('brick', '../src/img/brick.png');
 }
 
 // Calculate behaviors outside of game loop
@@ -45,10 +45,42 @@ function create() {
   paddle.anchor.set(0.5, 0);
   // Paddle immovable so ball does not affect paddle
   paddle.body.immovable = true;
+
+  // Draw bricks
+  initBricks();
 }
 
 // Game loop behavior
 function update() {
   GAME.physics.arcade.collide(ball, paddle);
   paddle.x = GAME.input.x || GAME.world.width * 0.5;
+}
+
+function initBricks() {
+  brickInfo = {
+    width: 50,
+    height: 20,
+    count: {
+      row: 7,
+      col: 3
+    },
+    offset: {
+      top: 50,
+      left: 60
+    },
+    padding: 10
+  };
+
+  bricks = GAME.add.group();
+  for (var c = 0; c < brickInfo.count.col; c++) {
+    for (var r = 0; r < brickInfo.count.row; r++) {
+      var brickX = r * (brickInfo.width + brickInfo.padding) + brickInfo.offset.left;
+      var brickY = c * (brickInfo.height + brickInfo.padding) + brickInfo.offset.top;
+      newBrick = GAME.add.sprite(brickX, brickY, 'brick');
+      GAME.physics.enable(newBrick, Phaser.Physics.ARCADE);
+      newBrick.body.immovable = true;
+      newBrick.anchor.set(0.5);
+      bricks.add(newBrick);
+    }
+  }
 }
