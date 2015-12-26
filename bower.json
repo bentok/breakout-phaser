@@ -1,0 +1,16 @@
+{
+  "name": "breakout-phaser",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bentok/breakout-phaser",
+  "authors": [
+    "Ben Copeland"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "phaser": "~2.4.4"
+  }
+}
